@@ -15,7 +15,6 @@
         얼굴 위치 데이터를 해석하여 드론 위치 조정을 위한 데이터 생성
 """
 
-from djitellopy import tello
 import cv2
 import cvzone
 import face_recognition
@@ -104,25 +103,3 @@ class FaceTracking:
 
         return cvzone.stackImages([img], 1, 0.75)
 
-if __name__ == "__main__":
-    face_tracker = FaceTracking("./faces/choi.jpg")
-
-    me = tello.Tello()
-    me.connect()
-    print(me.get_battery())
-    me.streamoff()
-    me.streamon()
-
-    while True:
-        img = me.get_frame_read().frame
-        img = cv2.resize(img, (640, 480))
-
-        face_tracker.detect_and_match_faces(img)
-        imgStacked = face_tracker.track_face(img)
-
-        cv2.imshow("Image Stacked", imgStacked)
-
-        if cv2.waitKey(5) & 0xFF == ord('q'):
-            break
-
-    cv2.destroyAllWindows()
