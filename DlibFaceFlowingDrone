@@ -1,0 +1,23 @@
+from djitellopy import tello
+
+class drone:
+    def __init__(self):
+        self.me = tello.Tello()
+        self.me.connect()
+
+    def set_drone(self):
+        print(f"drone battery : {self.me.get_battery()}")
+        self.me.streamoff()
+        self.me.streamon()
+
+    def take_off_drone(self):
+        self.me.takeoff()
+
+    def get_frame(self):
+        return self.me.get_frame_read().frame
+
+    def tracking_face(self, zVal, yVal, xVal):
+        self.me.send_rc_control(0, -zVal, -yVal, xVal)
+
+    def land_drone(self):
+        self.me.land()
